@@ -32,12 +32,14 @@
       ansible.builtin.copy:
         src: templates/m2/settings.xml
         dest: /home/parallels/.m2/settings.xml
+        mode: "600"
         force: no
 
     - name: Create Netrc settings file
       ansible.builtin.copy:
         src: templates/.netrc
         dest: /home/parallels/.netrc
+        mode: "600"
         force: no
 
     - name: Enable openssh
