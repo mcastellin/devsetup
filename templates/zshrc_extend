@@ -1,0 +1,13 @@
+export PATH=$PATH:/home/parallels/.local/bin
+export EDITOR="vim -u NORC"
+
+# Install apache maven
+export PATH=$HOME/software/apache-maven/bin:$PATH
+
+alias ta="tmux attach -t"
+alias ts="tmux ls"
+
+WORKDIR="/media/psf/Home/work"
+alias pace="cd ${WORKDIR}/vf/pace"
+alias khaos="cd ${WORKDIR}/vf/pace/dx-systems-khaos"
+

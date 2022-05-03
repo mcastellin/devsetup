@@ -1,0 +1,88 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Install required dnf packages
+      become: true
+      dnf:
+        name:
+          - zsh
+          - git
+          - curl
+          - openssh-server
+          - cmake
+          - python-cppy
+          - python3-devel
+          - gcc-c++
+          - tmux
+          - vim
+          - libxslt-devel
+          - libxml2-devel
+        state: "latest"
+
+    - name: Enable openssh
+      ansible.builtin.systemd:
+        name: sshd
+        enabled: yes
+
+    # Make sure oh-my-zsh is installed
+    - name: Check if .zshrc exists
+      stat:
+        path: ~/.zshrc
+      register: stat_rc_result
+
+    - name: Check if .oh-my-zsh exists
+      stat:
+        path: ~/.oh-my-zsh
+      register: stat_oh_my_zsh_result
+
+    - name: Cloning  oh-my-zsh
+      git:
+        repo=https://github.com/robbyrussell/oh-my-zsh
+        dest=~/.oh-my-zsh
+      when: not stat_oh_my_zsh_result.stat.exists
+
+    - name: Creating new ~/.zshrc
+      copy:
+        src=~/.oh-my-zsh/templates/zshrc.zsh-template
+        dest=~/.zshrc
+      when: not stat_rc_result.stat.exists
+
+    - name: Set default shell for parallels user
+      ansible.builtin.user:
+        name: parallels
+        shell: /usr/bin/zsh
+
+    # Make sure Docker is installed
+    - name: Check if docker is already installed
+      become: true
+      ansible.builtin.group:
+        name: docker
+      register: docker_group_exists
+
+    - name: Download docker install script
+      when: docker_group_exists.state == "absent"
+      ansible.builtin.get_url:
+        url: https://get.docker.com
+        dest: /tmp/get-docker.sh
+
+    - name: Install docker
+      when: docker_group_exists.state == "absent"
+      become: true
+      ansible.builtin.shell: sh /tmp/get-docker.sh
+
+    - name: Enable docker service
+      ansible.builtin.systemd:
+        name: docker
+        enabled: yes
+
+    - name: Check docker group exists
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Add docker group to user
+      ansible.builtin.user:
+        name: parallels
+        groups: docker
+        append: yes
+
