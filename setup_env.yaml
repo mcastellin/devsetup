@@ -1,7 +1,8 @@
 ---
 
 - hosts: localhost
-  user_home: /home/parallels
+  vars: 
+    user_home: /home/parallels
   tasks:
     - name: Install required dnf packages
       become: true
