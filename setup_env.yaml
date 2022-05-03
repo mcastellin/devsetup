@@ -17,6 +17,7 @@
           - vim
           - libxslt-devel
           - libxml2-devel
+          - dnf-plugins-core
         state: "latest"
 
     - name: Enable openssh
@@ -132,3 +133,8 @@
           - wheel
           - twine
 
+    - name: Install Terraform
+      become: true
+      dnf:
+        name: terraform
+        enablerepo: https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
