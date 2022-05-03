@@ -49,6 +49,7 @@
       when: not stat_rc_result.stat.exists
 
     - name: Set default shell for parallels user
+      become: true
       ansible.builtin.user:
         name: parallels
         shell: /usr/bin/zsh
