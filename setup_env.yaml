@@ -57,18 +57,17 @@
     # Make sure Docker is installed
     - name: Check if docker is already installed
       become: true
-      ansible.builtin.group:
-        name: docker
-      register: docker_group_exists
+      ansible.builtin.shell: "docker --version"
+      register: docker_version
 
     - name: Download docker install script
-      when: docker_group_exists.state == "absent"
+      when: docker_version.rc != 0
       ansible.builtin.get_url:
         url: https://get.docker.com
         dest: /tmp/get-docker.sh
 
     - name: Install docker
-      when: docker_group_exists.state == "absent"
+      when: docker_version.rc != 0
       become: true
       ansible.builtin.shell: sh /tmp/get-docker.sh
 
