@@ -58,6 +58,8 @@
     - name: Check if docker is already installed
       become: true
       ansible.builtin.shell: "docker --version"
+      failed_when: false
+      changed_when: false
       register: docker_version
 
     - name: Download docker install script
@@ -83,6 +85,7 @@
         state: present
 
     - name: Add docker group to user
+      become: true
       ansible.builtin.user:
         name: parallels
         groups: docker
