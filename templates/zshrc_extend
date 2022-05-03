@@ -10,7 +10,7 @@ export PATH=$PATH:$HOME/.local/bin
 export EDITOR="vim -u NORC"
 
 # Install apache maven
-export PATH=$HOME/software/apache-maven/bin:$PATH
+export PATH=$HOME/software/apache-maven-3.8.5/bin:$PATH
 
 #jEnv configuration
 export PATH="$HOME/.jenv/bin:$PATH"

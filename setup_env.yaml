@@ -161,7 +161,7 @@
       when: maven_version.rc != 0
       ansible.builtin.unarchive:
         src: https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
-        dest: /home/parallels/software/apache-maven-3.8.5
+        dest: /home/parallels/software/
         remote_src: yes
 
     - name: Add Hashicorp repo
