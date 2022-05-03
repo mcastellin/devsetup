@@ -1,8 +1,7 @@
 ---
 
 - hosts: localhost
-  user:
-    home: /home/parallels
+  user_home: /home/parallels
   tasks:
     - name: Install required dnf packages
       become: true
@@ -27,21 +26,21 @@
 
     - name: Make sure work directories are created
       ansible.builtin.shell: |
-        mkdir -p {{ user.home }}/software
-        mkdir -p {{ user.home }}/.zshrc.d
-        mkdir -p {{ user.home }}/.m2
+        mkdir -p {{ user_home }}/software
+        mkdir -p {{ user_home }}/.zshrc.d
+        mkdir -p {{ user_home }}/.m2
 
     - name: Create Maven settings file
       ansible.builtin.copy:
         src: templates/m2/settings.xml
-        dest: "{{ user.home }}/.m2/settings.xml"
+        dest: "{{ user_home }}/.m2/settings.xml"
         mode: "600"
         force: no
 
     - name: Create Netrc settings file
       ansible.builtin.copy:
         src: templates/.netrc
-        dest: "{{ user.home }}/.netrc"
+        dest: "{{ user_home }}/.netrc"
         mode: "600"
         force: no
 
@@ -122,28 +121,28 @@
     - name: Copy vimrc configuration
       ansible.builtin.copy:
         src: templates/.vimrc
-        dest: "{{ user.home }}/.vimrc"
+        dest: "{{ user_home }}/.vimrc"
 
     - name: Copy tmux configuration
       ansible.builtin.copy:
         src: templates/.tmux.conf
-        dest: "{{ user.home }}/.tmux.conf"
+        dest: "{{ user_home }}/.tmux.conf"
 
     - name: Clone Vundle repository
       git:
         repo: https://github.com/VundleVim/Vundle.vim.git
-        dest: "{{ user.home }}/.vim/bundle/Vundle.vim"
+        dest: "{{ user_home }}/.vim/bundle/Vundle.vim"
         clone: yes
         update: yes
 
     - name: Make sure vim plugins are installed
       ansible.builtin.shell: "vim +PluginInstall +qall"
     - name: Add extras to vimrc
-      ansible.builtin.shell: "cat templates/.vimrc_extras >> {{ user.home }}/.vimrc"
+      ansible.builtin.shell: "cat templates/.vimrc_extras >> {{ user_home }}/.vimrc"
 
     - name: Compile YouCompleteMe vim plugin
       ansible.builtin.shell: |
-        cd {{ user.home }}/.vim/bundle/youcompleteme/
+        cd {{ user_home }}/.vim/bundle/youcompleteme/
         python3 install.py
     
     - name: Install useful pip packages
@@ -161,7 +160,7 @@
     - name: Install Jenv
       git:
         repo: https://github.com/jenv/jenv.git
-        dest: "{{ user.home }}/.jenv"
+        dest: "{{ user_home }}/.jenv"
         clone: yes
         update: yes
     - name: Add java versions
@@ -179,7 +178,7 @@
       when: maven_version.rc != 0
       ansible.builtin.unarchive:
         src: https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
-        dest: "{{ user.home }}/software/"
+        dest: "{{ user_home }}/software/"
         remote_src: yes
 
     - name: Add Hashicorp repo
@@ -215,5 +214,5 @@
 
     - name: Update Zshrc file
       ansible.builtin.shell: |
-        cp {{ user.home }}/.oh-my-zsh/templates/zshrc.zsh-template {{ user.home }}/.zshrc
-        cat templates/zshrc_extend >> {{ user.home }}/.zshrc
+        cp {{ user_home }}/.oh-my-zsh/templates/zshrc.zsh-template {{ user_home }}/.zshrc
+        cat templates/zshrc_extend >> {{ user_home }}/.zshrc
