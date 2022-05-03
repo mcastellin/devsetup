@@ -3,8 +3,10 @@
 echo "Get the latest version from repo"
 git pull
 
-echo "Install make sure ansible is installed"
-sudo dnf install -y ansible
+echo "Make sure ansible is installed"
+if ! ansible --version ; then
+    sudo dnf install -y ansible
+fi
 
 echo "Updating system"
 ansible-playbook setup_env.yaml
