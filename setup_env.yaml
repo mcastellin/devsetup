@@ -26,6 +26,19 @@
       ansible.builtin.shell: |
         mkdir -p /home/parallels/software
         mkdir -p /home/parallels/.zshrc.d
+        mkdir -p /home/parallels/.m2
+
+    - name: Create Maven settings file
+      ansible.builtin.copy:
+        src: templates/m2/settings.xml
+        dest: /home/parallels/.m2/settings.xml
+        force: no
+
+    - name: Create Netrc settings file
+      ansible.builtin.copy:
+        src: templates/.netrc
+        dest: /home/parallels/.netrc
+        force: no
 
     - name: Enable openssh
       become: true
