@@ -1,0 +1,21 @@
+########################
+######## GLOBAL ########
+########################
+ 
+
+Host *
+    AddKeysToAgent yes
+    ForwardAgent yes
+
+Host vs-ssh.visualstudio.com
+    User vfuk-digital
+    Hostname vs-ssh.visualstudio.com
+    IdentityFile ~/.ssh/vfuk-digital
+    IdentitiesOnly yes
+    PubkeyAcceptedKeyTypes +ssh-rsa
+
+Host ssh.dev.azure.com
+    Hostname vs-ssh.visualstudio.com
+    IdentityFile ~/.ssh/id_rsa
+    IdentitiesOnly yes
+    PubkeyAcceptedKeyTypes +ssh-rsa

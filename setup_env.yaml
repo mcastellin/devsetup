@@ -46,6 +46,12 @@
         mode: "600"
         force: no
 
+    - name: Create ssh config file
+      template:
+        src: templates/ssh/config
+        dest: "{{ user_home }}/.ssh/config"
+        force: no
+
     - name: Enable openssh
       become: true
       ansible.builtin.systemd:
