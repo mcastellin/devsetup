@@ -8,8 +8,9 @@
           - zsh
           - git
           - curl
-          - openssh-server
           - cmake
+          - build-essential
+          - openssh-server
           - python-cppy
           - python3-devel
           - gcc-c++
@@ -112,3 +113,10 @@
 
     - name: Make sure vim plugins are installed
       ansible.builtin.shell: "vim +PluginInstall +qall"
+    - name: Add extras to vimrc
+      ansible.builtin.shell: "cat templates/.vimrc_extras >> /home/parallels/.vimrc"
+
+    - name: Compile YouCompleteMe completers
+      ansible.builtin.shell: |
+        cd /home/parallels/.vim/bundle/youcompleteme/
+        python3 install.py
