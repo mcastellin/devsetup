@@ -109,3 +109,6 @@
         dest: /home/parallels/.vim/bundle/Vundle.vim
         clone: yes
         update: yes
+
+    - name: Make sure vim plugins are installed
+      ansible.builtin.shell: "vim +PluginInstall +qall"
