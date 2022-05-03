@@ -93,3 +93,19 @@
         groups: docker
         append: yes
 
+    - name: Copy vimrc configuration
+      ansible.builtin.copy:
+        src: templates/.vimrc
+        dest: /home/parallels/.vimrc
+
+    - name: Copy tmux configuration
+      ansible.builtin.copy:
+        src: templates/.tmux.conf
+        dest: /home/parallels/.tmux.conf
+
+    - name: Clone Vundle repository
+      git:
+        repo: https://github.com/VundleVim/Vundle.vim.git
+        dest: /home/parallels/.vim/bundle/Vundle.vim
+        clone: yes
+        update: yes
