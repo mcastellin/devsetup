@@ -34,14 +34,14 @@
     - name: Create Maven settings file
       ansible.builtin.copy:
         src: templates/m2/settings.xml
-        dest: {{ user.home }}/.m2/settings.xml
+        dest: "{{ user.home }}/.m2/settings.xml"
         mode: "600"
         force: no
 
     - name: Create Netrc settings file
       ansible.builtin.copy:
         src: templates/.netrc
-        dest: {{ user.home }}/.netrc
+        dest: "{{ user.home }}/.netrc"
         mode: "600"
         force: no
 
@@ -122,17 +122,17 @@
     - name: Copy vimrc configuration
       ansible.builtin.copy:
         src: templates/.vimrc
-        dest: {{ user.home }}/.vimrc
+        dest: "{{ user.home }}/.vimrc"
 
     - name: Copy tmux configuration
       ansible.builtin.copy:
         src: templates/.tmux.conf
-        dest: {{ user.home }}/.tmux.conf
+        dest: "{{ user.home }}/.tmux.conf"
 
     - name: Clone Vundle repository
       git:
         repo: https://github.com/VundleVim/Vundle.vim.git
-        dest: {{ user.home }}/.vim/bundle/Vundle.vim
+        dest: "{{ user.home }}/.vim/bundle/Vundle.vim"
         clone: yes
         update: yes
 
@@ -161,7 +161,7 @@
     - name: Install Jenv
       git:
         repo: https://github.com/jenv/jenv.git
-        dest: {{ user.home }}/.jenv
+        dest: "{{ user.home }}/.jenv"
         clone: yes
         update: yes
     - name: Add java versions
@@ -179,7 +179,7 @@
       when: maven_version.rc != 0
       ansible.builtin.unarchive:
         src: https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
-        dest: {{ user.home }}/software/
+        dest: "{{ user.home }}/software/"
         remote_src: yes
 
     - name: Add Hashicorp repo
