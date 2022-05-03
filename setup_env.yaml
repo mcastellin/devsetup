@@ -157,6 +157,8 @@
           - keyring
           - wheel
           - twine
+          - pipenv
+        state: present
 
     - name: Install Jenv
       git:

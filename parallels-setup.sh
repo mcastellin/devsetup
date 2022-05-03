@@ -5,10 +5,9 @@ git pull
 
 echo "Install requirements"
 pip install --upgrade pip
-pip install pipenv
-pipenv install
+pip install --upgrade ansible
 
 echo "Updating system"
-pipenv run ansible-playbook setup_env.yaml
+ansible-playbook setup_env.yaml
 
 
