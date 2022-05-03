@@ -18,6 +18,8 @@
           - libxslt-devel
           - libxml2-devel
           - dnf-plugins-core
+          - java-17-openjdk-devel
+          - java-11-openjdk-devel
         state: "latest"
 
     - name: Enable openssh
