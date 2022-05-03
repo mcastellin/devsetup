@@ -73,6 +73,7 @@
       ansible.builtin.shell: sh /tmp/get-docker.sh
 
     - name: Enable docker service
+      become: true
       ansible.builtin.systemd:
         name: docker
         enabled: yes
