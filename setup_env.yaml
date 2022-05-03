@@ -22,6 +22,11 @@
           - java-17-openjdk-devel
         state: "latest"
 
+    - name: Make sure work directories are created
+      ansible.builtin.shell: |
+        mkdir -p /home/parallels/software
+        mkdir -p /home/parallels/.zshrc.d
+
     - name: Enable openssh
       become: true
       ansible.builtin.systemd:
@@ -194,4 +199,3 @@
       ansible.builtin.shell: |
         cp /home/parallels/.oh-my-zsh/templates/zshrc.zsh-template /home/parallels/.zshrc
         cat templates/zshrc_extend >> /home/parallels/.zshrc
-        mkdir -p /home/parallels/.zshrc.d
