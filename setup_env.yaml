@@ -18,8 +18,8 @@
           - libxslt-devel
           - libxml2-devel
           - dnf-plugins-core
-          - java-17-openjdk-devel
           - java-11-openjdk-devel
+          - java-17-openjdk-devel
         state: "latest"
 
     - name: Enable openssh
@@ -141,6 +141,10 @@
         dest: /home/parallels/.jenv
         clone: yes
         update: yes
+    - name: Add java versions
+      ansible.builtin.shell: |
+        jenv add /usr/lib/jvm/java-11-openjdk
+        jenv add /usr/lib/jvm/java-17-openjdk
 
     - name: Add Hashicorp repo
       become: true
