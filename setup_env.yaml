@@ -28,18 +28,19 @@
     - name: Make sure work directories are created
       ansible.builtin.shell: |
         mkdir -p {{ user_home }}/software
-        mkdir -p {{ user_home }}/.zshrc.d
         mkdir -p {{ user_home }}/.m2
+        mkdir -p {{ user_home }}/.zshrc.d
+        touch {{ user_home }}/.zshrc.d/user_env.sh
 
     - name: Create Maven settings file
-      ansible.builtin.copy:
+      template:
         src: templates/m2/settings.xml
         dest: "{{ user_home }}/.m2/settings.xml"
         mode: "600"
         force: no
 
     - name: Create Netrc settings file
-      ansible.builtin.copy:
+      template:
         src: templates/.netrc
         dest: "{{ user_home }}/.netrc"
         mode: "600"

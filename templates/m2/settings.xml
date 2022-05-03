@@ -6,27 +6,27 @@
     <server>
       <id>Maven</id>
       <username>vfuk-digital</username>
-      <password>{{ vf-pat }}</password>
+      <password>{{ lookup('env', 'VFUK_PAT_TOKEN') or "PAT_TOKEN" }}</password>
     </server>
     <server>
       <id>dal-lib-webclient-wrapper</id>
       <username>vfuk-digital</username>
-      <password>{{ vf-pat }}</password>
+      <password>{{ lookup('env', 'VFUK_PAT_TOKEN') or "PAT_TOKEN" }}</password>
     </server>
     <server>
       <id>Digital</id>
       <username>vfuk-digital</username>
-      <password>{{ vf-pat }}</password>
+      <password>{{ lookup('env', 'VFUK_PAT_TOKEN') or "PAT_TOKEN" }}</password>
     </server>
     <server>
       <id>Systems</id>
       <username>vfuk-digital</username>
-      <password>{{ vf-pat }}</password>
+      <password>{{ lookup('env', 'VFUK_PAT_TOKEN') or "PAT_TOKEN" }}</password>
     </server>
     <server>
       <id>vfuk-digital-visualstudio.com-digital</id>
       <username>vfuk-digital</username>
-      <password>{{ vf-pat }}</password>
+      <password>{{ lookup('env', 'VFUK_PAT_TOKEN') or "PAT_TOKEN" }}</password>
     </server>
   </servers>
 </settings>
