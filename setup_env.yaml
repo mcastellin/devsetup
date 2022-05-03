@@ -20,6 +20,7 @@
         state: "latest"
 
     - name: Enable openssh
+      become: true
       ansible.builtin.systemd:
         name: sshd
         enabled: yes
