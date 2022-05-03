@@ -1,5 +1,8 @@
 ---
+
 - hosts: localhost
+  vars: 
+    user_home: /home/parallels
   tasks:
     - name: Install required dnf packages
       become: true
@@ -8,8 +11,8 @@
           - zsh
           - git
           - curl
-          - openssh-server
           - cmake
+          - openssh-server
           - python-cppy
           - python3-devel
           - gcc-c++
@@ -17,12 +20,44 @@
           - vim
           - libxslt-devel
           - libxml2-devel
+          - dnf-plugins-core
+          - java-11-openjdk-devel
+          - java-17-openjdk-devel
         state: "latest"
 
+    - name: Make sure work directories are created
+      ansible.builtin.shell: |
+        mkdir -p {{ user_home }}/software
+        mkdir -p {{ user_home }}/.m2
+        mkdir -p {{ user_home }}/.zshrc.d
+        touch {{ user_home }}/.zshrc.d/user_env.sh
+
+    - name: Create Maven settings file
+      template:
+        src: templates/m2/settings.xml
+        dest: "{{ user_home }}/.m2/settings.xml"
+        mode: "600"
+        force: no
+
+    - name: Create Netrc settings file
+      template:
+        src: templates/.netrc
+        dest: "{{ user_home }}/.netrc"
+        mode: "600"
+        force: no
+
+    - name: Create ssh config file
+      template:
+        src: templates/ssh/config
+        dest: "{{ user_home }}/.ssh/config"
+        force: no
+
     - name: Enable openssh
+      become: true
       ansible.builtin.systemd:
         name: sshd
         enabled: yes
+        state: started
 
     # Make sure oh-my-zsh is installed
     - name: Check if .zshrc exists
@@ -48,6 +83,7 @@
       when: not stat_rc_result.stat.exists
 
     - name: Set default shell for parallels user
+      become: true
       ansible.builtin.user:
         name: parallels
         shell: /usr/bin/zsh
@@ -55,25 +91,28 @@
     # Make sure Docker is installed
     - name: Check if docker is already installed
       become: true
-      ansible.builtin.group:
-        name: docker
-      register: docker_group_exists
+      ansible.builtin.shell: "docker --version"
+      failed_when: false
+      changed_when: false
+      register: docker_version
 
     - name: Download docker install script
-      when: docker_group_exists.state == "absent"
+      when: docker_version.rc != 0
       ansible.builtin.get_url:
         url: https://get.docker.com
         dest: /tmp/get-docker.sh
 
     - name: Install docker
-      when: docker_group_exists.state == "absent"
+      when: docker_version.rc != 0
       become: true
       ansible.builtin.shell: sh /tmp/get-docker.sh
 
     - name: Enable docker service
+      become: true
       ansible.builtin.systemd:
         name: docker
         enabled: yes
+        state: started
 
     - name: Check docker group exists
       ansible.builtin.group:
@@ -81,8 +120,112 @@
         state: present
 
     - name: Add docker group to user
+      become: true
       ansible.builtin.user:
         name: parallels
         groups: docker
         append: yes
 
+    - name: Copy vimrc configuration
+      ansible.builtin.copy:
+        src: templates/.vimrc
+        dest: "{{ user_home }}/.vimrc"
+
+    - name: Copy tmux configuration
+      ansible.builtin.copy:
+        src: templates/.tmux.conf
+        dest: "{{ user_home }}/.tmux.conf"
+
+    - name: Clone Vundle repository
+      git:
+        repo: https://github.com/VundleVim/Vundle.vim.git
+        dest: "{{ user_home }}/.vim/bundle/Vundle.vim"
+        clone: yes
+        update: yes
+
+    - name: Make sure vim plugins are installed
+      ansible.builtin.shell: "vim +PluginInstall +qall"
+    - name: Add extras to vimrc
+      ansible.builtin.shell: "cat templates/.vimrc_extras >> {{ user_home }}/.vimrc"
+
+    - name: Compile YouCompleteMe vim plugin
+      ansible.builtin.shell: |
+        cd {{ user_home }}/.vim/bundle/youcompleteme/
+        python3 install.py
+    
+    - name: Install useful pip packages
+      ansible.builtin.pip:
+        name:
+          - awscli-local
+          - terraform-local
+          - localstack
+          - mitmproxy
+          - envsubst
+          - keyring
+          - wheel
+          - build
+          - twine
+          - pipenv
+        state: present
+
+    - name: Install Jenv
+      git:
+        repo: https://github.com/jenv/jenv.git
+        dest: "{{ user_home }}/.jenv"
+        clone: yes
+        update: yes
+    - name: Add java versions
+      ansible.builtin.shell: |
+        export PATH="{{ user_home }}/.jenv/bin:$PATH"
+        eval "$(jenv init -)"
+        jenv add /usr/lib/jvm/java-11-openjdk
+        jenv add /usr/lib/jvm/java-17-openjdk
+
+    - name: Check Maven installed
+      ansible.builtin.shell: "mvn --version"
+      failed_when: false
+      changed_when: false
+      register: maven_version
+
+    - name: Download Maven
+      when: maven_version.rc != 0
+      ansible.builtin.unarchive:
+        src: https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
+        dest: "{{ user_home }}/software/"
+        remote_src: yes
+
+    - name: Add Hashicorp repo
+      become: true
+      ansible.builtin.shell: |
+        dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
+    - name: Install Terraform
+      become: true
+      dnf:
+        name: terraform
+
+    # Make sure awscli is installed
+    - name: Check if awscli is already installed
+      become: true
+      ansible.builtin.shell: "aws --version"
+      failed_when: false
+      changed_when: false
+      register: aws_version
+
+    - name: Download awscliv2 install script
+      when: aws_version.rc != 0
+      ansible.builtin.get_url:
+        url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+        dest: /tmp/awscliv2.zip
+
+    - name: Install awscliv2
+      when: aws_version.rc != 0
+      become: true
+      ansible.builtin.shell: |
+        cd /tmp/
+        unzip awscliv2.zip
+        ./aws/install
+
+    - name: Update Zshrc file
+      ansible.builtin.shell: |
+        cp {{ user_home }}/.oh-my-zsh/templates/zshrc.zsh-template {{ user_home }}/.zshrc
+        cat templates/zshrc_extend >> {{ user_home }}/.zshrc

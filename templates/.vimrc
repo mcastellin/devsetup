@@ -22,6 +22,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'chiel92/vim-autoformat'
 Plugin 'nvie/vim-flake8'
+Plugin 'hashivim/vim-terraform'
 
 " all plugins must be added before this line
 call vundle#end()           " required 
@@ -87,4 +88,3 @@ syntax on
 set encoding=UTF-8
 
 set background=dark
-colorscheme solarized

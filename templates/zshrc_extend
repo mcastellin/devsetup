@@ -1,13 +1,23 @@
-export PATH=$PATH:/home/parallels/.local/bin
-export EDITOR="vim -u NORC"
-
-# Install apache maven
-export PATH=$HOME/software/apache-maven/bin:$PATH
-
 alias ta="tmux attach -t"
 alias ts="tmux ls"
 
 WORKDIR="/media/psf/Home/work"
+alias work="cd ${WORKDIR}"
 alias pace="cd ${WORKDIR}/vf/pace"
 alias khaos="cd ${WORKDIR}/vf/pace/dx-systems-khaos"
 
+export PATH=$PATH:$HOME/.local/bin
+export EDITOR="vim -u NORC"
+
+# Install apache maven
+export PATH=$HOME/software/apache-maven-3.8.5/bin:$PATH
+
+#jEnv configuration
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+#---------------------
+
+# Source all configuration files in .zshrc.d
+for FILE in $HOME/.zshrc.d/* ; do
+    . $FILE
+done
