@@ -9,7 +9,6 @@
           - git
           - curl
           - cmake
-          - build-essential
           - openssh-server
           - python-cppy
           - python3-devel
@@ -116,7 +115,20 @@
     - name: Add extras to vimrc
       ansible.builtin.shell: "cat templates/.vimrc_extras >> /home/parallels/.vimrc"
 
-    - name: Compile YouCompleteMe completers
+    - name: Compile YouCompleteMe vim plugin
       ansible.builtin.shell: |
         cd /home/parallels/.vim/bundle/youcompleteme/
         python3 install.py
+    
+    - name: Install useful pip packages
+      ansible.builtin.pip:
+        name:
+          - awscli-local
+          - terraform-local
+          - localstack
+          - mitmproxy
+          - envsubst
+          - keyring
+          - wheel
+          - twine
+
