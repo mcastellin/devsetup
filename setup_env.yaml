@@ -133,6 +133,13 @@
           - wheel
           - twine
 
+    - name: Install Jenv
+      git:
+        repo: https://github.com/jenv/jenv.git
+        dest: /home/parallels/.jenv
+        clone: yes
+        update: yes
+
     - name: Add Hashicorp repo
       become: true
       ansible.builtin.shell: |
@@ -163,3 +170,9 @@
         cd /tmp/
         unzip awscliv2.zip
         ./aws/install
+
+    - name: Update Zshrc file
+      ansible.builtin.shell: |
+        cp /home/parallels/.oh-my-zsh/templates/zshrc.zsh-template /home/parallels/.zshrc
+        cat templates/zshrc_extend >> /home/parallels/.zshrc
+        mkdir -p /home/parallels/.zshrc.d
