@@ -3,9 +3,8 @@
 echo "Get the latest version from repo"
 git pull
 
-echo "Install requirements"
-pip install --upgrade pip build wheel
-pip install --upgrade --user ansible
+echo "Install make sure ansible is installed"
+sudo dnf install -y ansible
 
 echo "Updating system"
 ansible-playbook setup_env.yaml

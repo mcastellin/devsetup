@@ -156,6 +156,7 @@
           - envsubst
           - keyring
           - wheel
+          - build
           - twine
           - pipenv
         state: present
@@ -168,6 +169,8 @@
         update: yes
     - name: Add java versions
       ansible.builtin.shell: |
+        export PATH="{{ user_home }}/.jenv/bin:$PATH"
+        eval "$(jenv init -)"
         jenv add /usr/lib/jvm/java-11-openjdk
         jenv add /usr/lib/jvm/java-17-openjdk
 
