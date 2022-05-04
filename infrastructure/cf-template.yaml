@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+
+  SsmTokenParameterPrefix:
+    Type: String
+    Description: The prefix used for all Personal Access Token parameters
+    Default: "/pat/parameters/"
+
+Resources:
+
+  TokenParametersReadAndRotateRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Ref AWS::AccountId
+            Action:
+              - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: "token-parameters-read-and-rotate-role"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ssm:*
+                Resource:
+                  - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${SsmTokenParameterPrefix}*"
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-token-parameters-read-and-rotate"

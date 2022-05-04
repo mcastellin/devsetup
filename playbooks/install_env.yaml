@@ -1,8 +1,9 @@
 ---
 
 - hosts: localhost
-  vars: 
+  vars:
     user_home: /home/parallels
+    modules_dir: null
   tasks:
     - name: Install required dnf packages
       become: true
@@ -28,23 +29,8 @@
     - name: Make sure work directories are created
       ansible.builtin.shell: |
         mkdir -p {{ user_home }}/software
-        mkdir -p {{ user_home }}/.m2
         mkdir -p {{ user_home }}/.zshrc.d
         touch {{ user_home }}/.zshrc.d/user_env.sh
-
-    - name: Create Maven settings file
-      template:
-        src: templates/m2/settings.xml
-        dest: "{{ user_home }}/.m2/settings.xml"
-        mode: "600"
-        force: no
-
-    - name: Create Netrc settings file
-      template:
-        src: templates/.netrc
-        dest: "{{ user_home }}/.netrc"
-        mode: "600"
-        force: no
 
     - name: Create ssh config file
       template:
@@ -59,7 +45,7 @@
         enabled: yes
         state: started
 
-    # Make sure oh-my-zsh is installed
+          # Make sure oh-my-zsh is installed
     - name: Check if .zshrc exists
       stat:
         path: ~/.zshrc
@@ -88,7 +74,7 @@
         name: parallels
         shell: /usr/bin/zsh
 
-    # Make sure Docker is installed
+          # Make sure Docker is installed
     - name: Check if docker is already installed
       become: true
       ansible.builtin.shell: "docker --version"
@@ -152,21 +138,28 @@
       ansible.builtin.shell: |
         cd {{ user_home }}/.vim/bundle/youcompleteme/
         python3 install.py
-    
+
     - name: Install useful pip packages
       ansible.builtin.pip:
         name:
           - awscli-local
+          - boto3
           - terraform-local
           - localstack
           - mitmproxy
           - envsubst
+          - black
+          - flake8
+          - click
           - keyring
           - wheel
           - build
           - twine
           - pipenv
         state: present
+
+    - name: Install parameter management cli
+      ansible.builtin.shell: "pip3 install --editable {{ modules_dir }}/cli/"
 
     - name: Install Jenv
       git:
@@ -203,7 +196,7 @@
       dnf:
         name: terraform
 
-    # Make sure awscli is installed
+          # Make sure awscli is installed
     - name: Check if awscli is already installed
       become: true
       ansible.builtin.shell: "aws --version"

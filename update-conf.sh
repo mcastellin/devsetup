@@ -12,5 +12,6 @@ if ! ansible --version ; then
 fi
 
 echo "Updating system"
-ansible-playbook $REALPATH/playbooks/install_env.yaml \
-    --extra-vars "{\"modules_dir\": \"${REALPATH}/modules\"}"
+devsetup-params sync
+. ~/.zshrc.d/*.sh
+ansible-playbook $REALPATH/playbooks/update_conf_files.yaml
