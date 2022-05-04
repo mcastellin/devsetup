@@ -4,11 +4,20 @@
   vars:
     user_home: /home/parallels
   tasks:
-    - name: Make sure work directories are created
-      ansible.builtin.shell: |
-        mkdir -p {{ user_home }}/.m2
-        mkdir -p {{ user_home }}/.zshrc.d
-        touch {{ user_home }}/.zshrc.d/user_env.sh
+    - name: "~/.m2"
+      ansible.builtin.file:
+        path: "{{ user_home }}/.m2"
+        state: directory
+
+    - name: "~/.zshrc.d"
+      ansible.builtin.file:
+        path: "{{ user_home }}/.zshrc.d"
+        state: directory
+
+    - name: Make sure user_env.sh file is present
+      ansible.builtin.file:
+        path: "{{ user_home }}/.zshrc.d/user_env.sh"
+        state: touch
 
     - name: Create Maven settings file
       template:
