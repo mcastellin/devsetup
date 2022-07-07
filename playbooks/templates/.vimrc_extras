@@ -7,3 +7,4 @@ colorscheme solarized
 " Limelight low contrast color
 " Greys are 230 -> 255
 let g:limelight_conceal_ctermfg = 239
+let g:limelight_default_coefficient = 0.7
