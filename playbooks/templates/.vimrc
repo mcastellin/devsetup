@@ -18,12 +18,15 @@ Plugin 'tpope/vim-surround'     " surround text with tags and parenthesis
 Plugin 'ctrlpvim/ctrlp.vim'     " fuzzy search in vim
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'chiel92/vim-autoformat'
 Plugin 'nvie/vim-flake8'
 Plugin 'hashivim/vim-terraform'
 Plugin 'junegunn/limelight.vim'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'ntk148v/komau.vim'
+Plugin 'joshdick/onedark.vim'
+Plugin 'cocopon/iceberg.vim'
 
 " all plugins must be added before this line
 call vundle#end()           " required 
