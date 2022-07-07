@@ -23,6 +23,7 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'chiel92/vim-autoformat'
 Plugin 'nvie/vim-flake8'
 Plugin 'hashivim/vim-terraform'
+Plugin 'junegunn/limelight.vim'
 
 " all plugins must be added before this line
 call vundle#end()           " required 

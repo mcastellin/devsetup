@@ -1,0 +1,10 @@
+[tool.black]
+line-length = 79
+
+include = '(\.pyi?|\.ipynb)$'
+exclude = '\.direnv|\.eggs|\.git|\.hg|\.mypy_cache|\.nox|\.tox|\.venv|venv|\.svn|_build|buck-out|build|dist'
+extend-exclude = '.*_metadata.py'
+
+skip-string-normalization = false
+skip-magic-trailing-comma = false
+
