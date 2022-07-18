@@ -1,10 +1,15 @@
 " Extras configuration to be applied after PlugInstall
-colorscheme solarized
+"colorscheme solarized
 "colorscheme komau
-"colorscheme onedark
+colorscheme onedark
 "colorscheme iceberg
 
 " Limelight low contrast color
 " Greys are 230 -> 255
 let g:limelight_conceal_ctermfg = 239
-let g:limelight_default_coefficient = 0.7
+
+hi StatusLineNC ctermbg=245 ctermfg=235
+hi StatusLine ctermbg=249 ctermfg=0
+
+let g:markdown_folding = 1
+set foldnestmax=2

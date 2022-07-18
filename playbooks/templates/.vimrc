@@ -14,6 +14,8 @@ Plugin 'valloric/youcompleteme'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'mzlogin/vim-markdown-toc'
+Plugin 'tpope/vim-markdown'
 Plugin 'tpope/vim-surround'     " surround text with tags and parenthesis
 Plugin 'ctrlpvim/ctrlp.vim'     " fuzzy search in vim
 Plugin 'airblade/vim-gitgutter'
@@ -27,6 +29,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'ntk148v/komau.vim'
 Plugin 'joshdick/onedark.vim'
 Plugin 'cocopon/iceberg.vim'
+Plugin 'Konfekt/FastFold'
 
 " all plugins must be added before this line
 call vundle#end()           " required 
