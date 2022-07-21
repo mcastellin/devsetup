@@ -95,3 +95,4 @@ syntax on
 set encoding=UTF-8
 
 set background=dark
+set mouse=a
