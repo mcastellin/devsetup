@@ -78,10 +78,10 @@
         dest=~/.zshrc
       when: not stat_rc_result.stat.exists
 
-    - name: Set default shell for {{ user_name }} user
+    - name: "Set default shell for {{ user_name }} user"
       become: true
       ansible.builtin.user:
-        name: {{ user_name }}
+        name: "{{ user_name }}"
         shell: /usr/bin/zsh
 
           # Make sure Docker is installed
@@ -118,7 +118,7 @@
     - name: Add docker group to user
       become: true
       ansible.builtin.user:
-        name: {{ user_name }}
+        name: "{{ user_name }}"
         groups: docker
         append: yes
 
