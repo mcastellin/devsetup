@@ -13,3 +13,23 @@ hi StatusLine ctermbg=249 ctermfg=0
 
 let g:markdown_folding = 1
 set foldnestmax=2
+
+" Temporary script to yank text to remote clipboard
+function! SendCopy()
+    let clipboard = expand('~/.clipboard')
+    let msg = getreg("a")
+    execute 'redir! > ' . clipboard
+    silent echo msg
+    silent! redir END
+
+    execute 'silent !sed -i "1d" $(realpath ~/.clipboard)
+                \ && curl -XPOST
+                \ -H "Content-Type: text/plain"
+                \ --data-binary "@$(realpath ~/.clipboard)"
+                \ http://localhost:6789/copy
+                \'
+    execute 'redraw!'
+    return
+endfunction
+
+vmap <C-A> "ay <bar> :call SendCopy()<CR>

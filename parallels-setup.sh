@@ -13,4 +13,4 @@ fi
 
 echo "Updating system"
 ansible-playbook $REALPATH/playbooks/install_env.yaml \
-    --extra-vars "{\"modules_dir\": \"${REALPATH}/modules\"}"
+    --extra-vars "{\"modules_dir\": \"${REALPATH}/modules\", \"user_name\": \"$(whoami)\", \"user_home\": \"$HOME\"}"

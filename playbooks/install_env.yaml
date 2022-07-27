@@ -2,7 +2,8 @@
 
 - hosts: localhost
   vars:
-    user_home: /home/parallels
+    user_home: /home/manuel
+    user_name: manuel
     modules_dir: null
   tasks:
     - name: Install required dnf packages
@@ -77,10 +78,10 @@
         dest=~/.zshrc
       when: not stat_rc_result.stat.exists
 
-    - name: Set default shell for parallels user
+    - name: Set default shell for {{ user_name }} user
       become: true
       ansible.builtin.user:
-        name: parallels
+        name: {{ user_name }}
         shell: /usr/bin/zsh
 
           # Make sure Docker is installed
@@ -117,7 +118,7 @@
     - name: Add docker group to user
       become: true
       ansible.builtin.user:
-        name: parallels
+        name: {{ user_name }}
         groups: docker
         append: yes
 
@@ -192,7 +193,7 @@
     - name: Download Maven
       when: maven_version.rc != 0
       ansible.builtin.unarchive:
-        src: https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
+        src: https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
         dest: "{{ user_home }}/software/"
         remote_src: yes
 

@@ -2,7 +2,7 @@
 
 - hosts: localhost
   vars:
-    user_home: /home/parallels
+    user_home: /home/manuel
   tasks:
     - name: "~/.m2"
       ansible.builtin.file:

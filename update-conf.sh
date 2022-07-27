@@ -14,4 +14,5 @@ fi
 echo "Updating system"
 devsetup-params sync
 . ~/.zshrc.d/*.sh
-ansible-playbook $REALPATH/playbooks/update_conf_files.yaml
+ansible-playbook $REALPATH/playbooks/update_conf_files.yaml \
+    --extra-vars "{\"user_home\": \"$HOME\"}"
