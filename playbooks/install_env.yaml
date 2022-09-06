@@ -25,6 +25,8 @@
           - dnf-plugins-core
           - java-11-openjdk-devel
           - java-17-openjdk-devel
+          - nodejs
+          - yarnpkg
         state: "latest"
 
     - name: "~/software"
