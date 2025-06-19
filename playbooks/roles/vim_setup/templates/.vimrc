@@ -146,8 +146,12 @@ let g:ale_pattern_options = {
 \   '.*\.go$': {'ale_enabled': 0},
 \}
 
+{% if vim_clipboard | default("local") == "remote_macbindings" %}
+noremap <Leader>y :!pbcopy<CR>u
+{% else %}
 noremap <Leader>y "+y
 noremap <Leader>p "+p
+{% endif %}
 
 " iPhython mappings for datascience
 

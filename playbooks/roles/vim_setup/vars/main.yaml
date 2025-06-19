@@ -1,3 +1,7 @@
 ---
 user_home: "/home/manuel"
 user_name: "manuel"
+
+# Operation mode for Vim clipboard
+#vim_clipboard: "local"
+vim_clipboard: "remote_macbindings"
