@@ -1,0 +1,11 @@
+#cloud-config
+
+packages:
+  - git
+
+ansible:
+  install_method: distro
+  package_name: ansible.noarch
+  pull:
+    url: git@github.com:mcastellin/devsetup.git
+    playbook_name: playbooks/install_env.yaml

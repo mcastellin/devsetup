@@ -1,0 +1,48 @@
+" Extras configuration to be applied after PlugInstall
+"colorscheme solarized
+"colorscheme komau
+colorscheme onedark
+"colorscheme iceberg
+
+" Limelight low contrast color
+" Greys are 230 -> 255
+let g:limelight_conceal_ctermfg = 239
+
+hi StatusLineNC ctermbg=245 ctermfg=235
+hi StatusLine ctermbg=249 ctermfg=0
+
+let g:markdown_folding = 1
+set foldnestmax=2
+
+" Use Ale in pipenv
+let g:ale_python_auto_pipenv = 1
+let g:ale_pattern_options = {
+\   '.*\.go$': {'ale_enabled': 0},
+\}
+
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+
+" iPhython mappings for datascience
+
+map <Leader>e :call PyShellSendLine()<CR>
+vmap <Leader>c :call PyShellSendMultiLine()<CR>
+"vmap <Leader>E y:call PyShellSendKey(substitute('<C-R>0',"\"","\\\"","")."\r")<CR>
+
+"map <startMap>                  :call StartPyShell()<CR>
+"nmap <killMap>                  :call StopPyShell()<CR>
+
+"nmap <sendWordUnderCursor>      :call PyShellSendKey("<C-R><C-W>\r")<CR> 
+"vmap <seeObjectUnderCursor>    y:call PyShellSendKey(substitute('<C-R>0',"\"","\\\"","")."\r")<CR>
+
+"map <showHead>                  :call PyShellSendKey("<C-R><C-W>.head()\r")
+"map <showColumns>               :call PyShellSendKey("<C-R><C-W>.columns\r")
+"map <dfDescribe>                :call PyShellSendKey("<C-R><C-W>.describe()\r")
+"map <dfDtypes>                  :call PyShellSendKey("<C-R><C-W>.dtypes\r")
+
+
+" Ignore autocomplete with ctrlp
+let g:ctrlp_custom_ignore = {
+            \ 'dir': '\.git$\|node_modules',
+            \ 'file': '\.DS_Store$'
+            \ }
