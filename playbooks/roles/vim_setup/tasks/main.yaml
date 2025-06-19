@@ -1,0 +1,78 @@
+---
+- name: Check if .zshrc exists
+  stat:
+    path: "{{ user_home }}/.zshrc"
+  register: stat_rc_result
+
+- name: Check if .oh-my-zsh exists
+  stat:
+    path: "{{ user_home }}/.oh-my-zsh"
+  register: stat_oh_my_zsh_result
+
+- name: Cloning oh-my-zsh
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh
+    dest: "{{ user_home }}/.oh-my-zsh"
+  when: not stat_oh_my_zsh_result.stat.exists
+
+- name: "Set default shell for {{ user_name }} user"
+  become: true
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    shell: /usr/bin/zsh
+
+- name: Copy vimrc for plugin installation
+  template:
+    src: templates/.vimrc
+    dest: "{{ user_home }}/.vimrc"
+
+- name: Copy tmux configuration
+  ansible.builtin.copy:
+    src: templates/.tmux.conf
+    dest: "{{ user_home }}/.tmux.conf"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  vars:
+    full_vimrc: false
+
+- name: Clone Vundle repository
+  git:
+    repo: https://github.com/VundleVim/Vundle.vim.git
+    dest: "{{ user_home }}/.vim/bundle/Vundle.vim"
+    clone: yes
+    update: yes
+
+- name: Make sure vim plugins are installed
+  ansible.builtin.shell: "vim +PluginInstall +GoInstallBinaries +qall"
+- name: Copy final vimrc file
+  template:
+    src: templates/.vimrc
+    dest: "{{ user_home }}/.vimrc"
+  vars:
+    full_vimrc: true
+
+- name: Compile YouCompleteMe vim plugin
+  ansible.builtin.shell: |
+    cd {{ user_home }}/.vim/bundle/youcompleteme/
+    python3 install.py
+
+- name: Update Zshrc file
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ user_home }}/.oh-my-zsh/templates/zshrc.zsh-template"
+    dest: "{{ user_home }}/.zshrc"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+
+- name: Ensure zshrc configuration
+  ansible.builtin.blockinfile:
+    path: "{{ user_home }}/.zshrc"
+    append_newline: true
+    prepend_newline: true
+    block: |
+      alias ta="tmux attach -t"
+      alias ts="tmux ls"
+      alias tw="tmux neww"
+      export PATH=$PATH:$HOME/.local/bin
+      export EDITOR="vim -u NORC"
+      export PATH="$PATH:/$HOME/go/bin"

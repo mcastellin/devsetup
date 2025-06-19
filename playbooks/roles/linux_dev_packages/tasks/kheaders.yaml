@@ -1,0 +1,32 @@
+---
+- name: Ensure packages to untar
+  become: true
+  apt:
+    name:
+      - tar
+      - xz-utils
+    state: "latest"
+
+- name: Check if kheaders module is available
+  stat:
+    path: /proc/kallsyms
+  register: kallsyms_exists
+
+- name: Load kheaders module if not loaded
+  modprobe:
+    name: kheaders
+    state: present
+  when: kallsyms_exists.stat.exists
+
+- name: Ensure kernel headers dir exists
+  become: true
+  ansible.builtin.file:
+    path: "/usr/src/linux-headers-{{ ansible_kernel }}"
+    state: directory
+
+- name: Extract Linux headers
+  become: true
+  ansible.builtin.unarchive:
+    src: "/sys/kernel/kheaders.tar.xz"
+    dest: "/usr/src/linux-headers-{{ ansible_kernel }}"
+  when: kallsyms_exists.stat.exists

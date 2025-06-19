@@ -1,0 +1,36 @@
+---
+- name: "Check if golang is already installed"
+  ansible.builtin.shell: "go version"
+  failed_when: false
+  changed_when: false
+  register: go_version_current
+
+- name: Set architecture-specific download variables
+  set_fact:
+    go_arch: >-
+      {% if ansible_architecture == 'x86_64' %}amd64
+      {%- elif ansible_architecture == 'aarch64' %}arm64
+      {%- elif ansible_architecture == 'armv7l' %}armv6l
+      {%- else %}{{ ansible_architecture }}{% endif %}
+
+- name: Download Go binaries
+  become: true
+  ansible.builtin.unarchive:
+    src: "https://go.dev/dl/go{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+    dest: "/usr/local"
+    remote_src: yes
+  when: go_version_current.rc != 0
+
+- name: Ensure go symlink exists
+  become: true
+  ansible.builtin.file:
+    state: link
+    src: "/usr/local/go/bin/go"
+    dest: "/usr/local/bin/go"
+
+- name: Ensure gofmt symlink exists
+  become: true
+  ansible.builtin.file:
+    state: link
+    src: "/usr/local/go/bin/gofmt"
+    dest: "/usr/local/bin/gofmt"

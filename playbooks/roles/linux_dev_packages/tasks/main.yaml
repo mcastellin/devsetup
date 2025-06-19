@@ -1,0 +1,16 @@
+---
+- name: Install kernel headers
+  import_tasks: kheaders.yaml
+
+- name: Install required packages for Ubuntu
+  import_tasks: ubuntu.yaml
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Install Docker
+  import_tasks: docker.yaml
+
+- name: Install Go
+  import_tasks: go.yaml
+
+- name: Install AWS cli
+  import_tasks: awscli.yaml

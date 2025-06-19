@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - linux_dev_packages
+    - vim_setup

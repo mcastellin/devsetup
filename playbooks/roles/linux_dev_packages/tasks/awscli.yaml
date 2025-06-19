@@ -1,0 +1,21 @@
+---
+- name: Check if awscli is already installed
+  become: true
+  ansible.builtin.shell: "aws --version"
+  failed_when: false
+  changed_when: false
+  register: aws_version
+
+- name: Download awscliv2 install script
+  when: aws_version.rc != 0
+  ansible.builtin.get_url:
+    url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    dest: /tmp/awscliv2.zip
+
+- name: Install awscliv2
+  when: aws_version.rc != 0
+  become: true
+  ansible.builtin.shell: |
+    cd /tmp/
+    unzip awscliv2.zip
+    ./aws/install
