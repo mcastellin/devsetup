@@ -2,9 +2,13 @@
 - name: Install kernel headers
   import_tasks: kheaders.yaml
 
-- name: Install required packages for Ubuntu
-  import_tasks: ubuntu.yaml
+- name: Install required packages for Ubuntu Linux
+  import_tasks: debian.yaml
   when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Install required packages for RedHat Linux
+  import_tasks: redhat.yaml
+  when: ansible_facts['os_family']|lower == 'redhat'
 
 - name: Install Docker
   import_tasks: docker.yaml

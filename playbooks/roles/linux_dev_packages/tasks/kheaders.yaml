@@ -1,11 +1,21 @@
 ---
-- name: Ensure packages to untar
+- name: Ensure packages to untar (Debian)
   become: true
   apt:
     name:
       - tar
       - xz-utils
     state: "latest"
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: Ensure packages to untar (RedHat)
+  become: true
+  dnf:
+    name:
+      - tar
+      - xz
+    state: "latest"
+  when: ansible_facts['os_family']|lower == 'redhat'
 
 - name: Check if kheaders module is available
   stat:
