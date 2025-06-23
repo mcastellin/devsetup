@@ -15,22 +15,22 @@
       - automake
       - gcc
       - gcc-c++
-      - kernel-devel
       - python3
       - python3-pip
       - python3-devel
       - python3-setuptools
+      - java-latest-openjdk
       - nodejs
     state: "latest"
 
-#- name: Install BPF packages
-  #become: true
-  #dnf:
-    #name:
-      #- strace
-      #- libbpfcc
-      #- libbpfcc-dev
-      #- python3-bpfcc
-      #- bpfcc-tools
-      #- bpftrace
-    #state: "latest"
+- name: Install BPF development tools
+  become: true
+  dnf:
+    name:
+      - clang
+      - llvm-strip
+      - libbpf
+      - libbpf-devel
+      - kernel-headers
+      - kernel-devel
+    state: "latest"

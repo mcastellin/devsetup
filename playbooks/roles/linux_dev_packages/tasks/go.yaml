@@ -34,3 +34,9 @@
     state: link
     src: "/usr/local/go/bin/gofmt"
     dest: "/usr/local/bin/gofmt"
+
+- name: Ensure Golang src directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ user_home }}/go/src"
+    state: directory

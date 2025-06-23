@@ -54,7 +54,7 @@
 - name: Compile YouCompleteMe vim plugin
   ansible.builtin.shell: |
     cd {{ user_home }}/.vim/bundle/youcompleteme/
-    python3 install.py
+    python3 install.py --all
 
 - name: Update Zshrc file
   ansible.builtin.copy:
