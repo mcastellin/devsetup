@@ -32,7 +32,6 @@ Plugin 'cocopon/iceberg.vim'
 Plugin 'Konfekt/FastFold'
 Plugin 'w0rp/ale'
 Plugin 'preservim/vimux'
-Plugin 'mcastellin/vim-pyShell'
 Plugin 'julienr/vim-cellmode'
 Plugin 'fatih/vim-go'
 
@@ -152,24 +151,6 @@ noremap <Leader>y :!pbcopy<CR>u
 noremap <Leader>y "+y
 noremap <Leader>p "+p
 {% endif %}
-
-" iPhython mappings for datascience
-
-map <Leader>e :call PyShellSendLine()<CR>
-vmap <Leader>c :call PyShellSendMultiLine()<CR>
-"vmap <Leader>E y:call PyShellSendKey(substitute('<C-R>0',"\"","\\\"","")."\r")<CR>
-
-"map <startMap>                  :call StartPyShell()<CR>
-"nmap <killMap>                  :call StopPyShell()<CR>
-
-"nmap <sendWordUnderCursor>      :call PyShellSendKey("<C-R><C-W>\r")<CR> 
-"vmap <seeObjectUnderCursor>    y:call PyShellSendKey(substitute('<C-R>0',"\"","\\\"","")."\r")<CR>
-
-"map <showHead>                  :call PyShellSendKey("<C-R><C-W>.head()\r")
-"map <showColumns>               :call PyShellSendKey("<C-R><C-W>.columns\r")
-"map <dfDescribe>                :call PyShellSendKey("<C-R><C-W>.describe()\r")
-"map <dfDtypes>                  :call PyShellSendKey("<C-R><C-W>.dtypes\r")
-
 
 " Ignore autocomplete with ctrlp
 let g:ctrlp_custom_ignore = {
